@@ -8,7 +8,7 @@
   <title>To-Do App</title>
 
   <!-- ---------------- estilos compartilhados entre login e signup ---------------- -->
-  <link rel="stylesheet" href="styles/acesso.css">
+  <link rel="stylesheet" href="./styles/acesso.css">
 
   <!-- ---------------------- lógica aplicada no login ----------------------- -->
   <!-- <script src="/scripts/utils.js"></script> --->
@@ -29,16 +29,17 @@
       <h1>Acessar</h1>
       <label>
         Email:
-        <input id="inputEmail" type="email" required minlength="6">
+        <input id="inputEmail" type="email"  required    >
+        <span class="mensage"></span>
         <!-- <small>Preencha o campo Nome corretamente</small> -->
       </label>
       <label>
         Senha:
-        <input id="inputPassword" type="password" required minlength="8">
+        <input id="inputPassword" type="password" required  minlength="8">
         <!-- <small>Preencha o campo Senha corretamente</small> -->
       </label>
 
-      <button type="submit" disabled>Acessar</button>
+      <button type="submit"  id="loginButton" >Acessar</button>
       <!-- input:disabled {background: WHITE;} -->
 
     </form>
@@ -47,7 +48,7 @@
     </div>
   </div>
 
-  <script src="./scripts/index.js"></script>
+  <script src="./scripts/cadastro.js"></script>
 
 </body>
 
