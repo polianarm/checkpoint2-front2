@@ -29,6 +29,7 @@ event.preventDefault(); //evita o comportamento padrão
 if(validate()){
 
     loginFormRef.submit();//Submit o formulario se a validação passar
+    // tests
 }   
 });
 
