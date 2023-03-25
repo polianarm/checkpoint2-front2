@@ -6,6 +6,7 @@ const passwordInputRef  = document.querySelector('#password');
 const passwordCheckInputRef  = document.querySelector('#passwordCheck');
 const submitInputRef  = document.querySelector('#submit');
 
+
 // Mensagens de erros de span
 const mensageNameRef = document.querySelector(".mensageName")
 const mensageLastNameRef = document.querySelector(".mensageLastName")
@@ -81,15 +82,15 @@ function validateEmail() {
   
   // função para verificar se as senhas são iguais
   function arePasswordsEqual() {
-if( passwordInputRef === passwordCheckInputRef){
+if( passwordInputRef.value.length === passwordCheckInputRef.value.length){
   mensagePasswordCheck.innerHTML = " ";
   passwordCheckInputRef.classList.remove("error");
-  return false;
+  return true;
 } else {
   mensagePasswordCheck.innerHTML = "Senhas não são iguais";
   passwordCheckInputRef.classList.add("error");
 
-  return true;
+  return false;
 }
 }
   
@@ -116,18 +117,19 @@ if( passwordInputRef === passwordCheckInputRef){
 //     isValid = false;
 //   }
 // }
- 
+submitInputRef.disabled = true;
   function completeValidate() {
     submitInputRef.addEventListener("click", (event) => {
       event.preventDefault(); //evita o comportamento padrão de envio do formulario
-      // submitInputRef.disabled = !(validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual())
-  
+      //submitInputRef.disabled = !(validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual())
+      const allFieldsValid = validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual() 
+        submitInputRef.disabled=!allFieldsValid
       if (validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual()) {
         
         alert("entrou");
-        //   loginButtonRef.form.submit(); //Submit o formulario se a validação passar
-        // submitInputRef.removeAttribute("disabled");
-
+        loginButtonRef.form.submit(); //Submit o formulario se a validação passar
+        submitInputRef.removeAttribute("disabled"); 
+      
       }
     });
   }
@@ -138,6 +140,7 @@ if( passwordInputRef === passwordCheckInputRef){
   emailInputRef.addEventListener('input', validateEmail);
   passwordInputRef.addEventListener('input', validatePassword);
   passwordCheckInputRef.addEventListener('input', arePasswordsEqual);
+ // submitInputRef.addEventListener('click', completeValidate)
 
 
   completeValidate()
