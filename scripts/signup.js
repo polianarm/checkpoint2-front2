@@ -1,5 +1,5 @@
 // inputs por ID 
-const nameInputRef  = document.querySelector('#name');
+const firstNameInputRef  = document.querySelector('#firstName');
 const lastNameInputRef  = document.querySelector('#lastName');
 const emailInputRef  = document.querySelector('#email');
 const passwordInputRef  = document.querySelector('#password');
@@ -21,15 +21,15 @@ function isValid (field, validationFunction){
 
 // VALIDAÇÃO DE NOME
 function validateName(){
-  const name = nameInputRef.value.trim();
+  const firstName = firstNameInputRef.value.trim();
 
-  if (name.length <4){
+  if (firstName.length <4){
     mensageNameRef.innerHTML ="Preencha corretamente o campo Nome";
-    nameInputRef.classList.add("error");
+    firstNameInputRef.classList.add("error");
     return false;
   }else {
     mensageNameRef.innerHTML = " ";
-    nameInputRef.classList.remove("error");
+    firstNameInputRef.classList.remove("error");
     return true;
   }
 }
@@ -54,7 +54,9 @@ function validateEmail() {
   const email = emailInputRef.value.trim();
 // inputEmailRef.value.length
 
-  if (email.length < 6) {
+const emailRegex = /^[a-zA-Z0-9._%+-]{6,}@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+
+  if (!emailRegex.test(email)) {
     mensageEmailRef.innerHTML = "Preencha corretamente o campo Email";
     emailInputRef.classList.add("error");
     return false;
@@ -82,7 +84,7 @@ function validateEmail() {
   
   // função para verificar se as senhas são iguais
   function arePasswordsEqual() {
-if( passwordInputRef.value.length === passwordCheckInputRef.value.length){
+if( passwordInputRef.value === passwordCheckInputRef.value){
   mensagePasswordCheck.innerHTML = " ";
   passwordCheckInputRef.classList.remove("error");
   return true;
@@ -135,7 +137,7 @@ submitInputRef.disabled = true;
   }
   
   // adiciona um evento de input para cada campo de entrada
-  nameInputRef.addEventListener('input', validateName);
+  firstNameInputRef.addEventListener('input', validateName);
   lastNameInputRef.addEventListener('input', validateLastName);
   emailInputRef.addEventListener('input', validateEmail);
   passwordInputRef.addEventListener('input', validatePassword);
@@ -146,5 +148,3 @@ submitInputRef.disabled = true;
   completeValidate()
 
 
-  // IMPLEMENTAÇÃO
-  // resetar senha e repetir senha caso de erro em um deles

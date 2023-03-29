@@ -12,8 +12,6 @@
 
   <!-- ---------------------- lógica aplicada no registro -------------------- -->
 
-
-
 </head>
 
 <body>
@@ -29,12 +27,12 @@
 
       <label>
         Nome:
-        <input type="text" required minlength="4" maxlength="20" id="name">
+        <input type="text" required minlength="4" maxlength="20" id="firstName">
         <span class="mensageName  mensage"></span>
       </label>
       <label>
         Sobrenome:
-        <input type="text" required minlength="6" maxlength="20" id="lastName">
+        <input type="text" required minlength="6" maxlength="49" id="lastName">
         <span class="mensageLastName  mensage"></span>
       </label>
       <label>
@@ -62,7 +60,7 @@
     </div>
   </div>
 
-  <script src="./scripts/signup.js"></script>
+  <script src="./scripts/signup.js" type="module"></script>
 </body>
 
 </html>

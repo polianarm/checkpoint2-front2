@@ -4,17 +4,20 @@ const loginButtonRef = document.querySelector("#loginButton");
 const mensage1 = document.querySelector(".mensage");
 const mensage2 = document.querySelector(".mensage2");
 
+// VALIDAÇÃO DE EMAIL
 function validateEmail() {
-  const email = inputEmailRef.value;
+  const email = emailInputRef.value.trim();
 // inputEmailRef.value.length
 
-  if (email.length < 6) {
-    mensage1.innerHTML = "Preencha corretamente o campo Email";
-    inputEmailRef.classList.add("error");
+const emailRegex = /^[a-zA-Z0-9._%+-]{6,}@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+
+  if (!emailRegex.test(email)) {
+    mensageEmailRef.innerHTML = "Preencha corretamente o campo Email";
+    emailInputRef.classList.add("error");
     return false;
   } else {
-    mensage1.innerHTML = " ";
-    inputEmailRef.classList.remove("error");
+    mensageEmailRef.innerHTML = " ";
+    emailInputRef.classList.remove("error");
     return true;
   }
 }
