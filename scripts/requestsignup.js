@@ -28,7 +28,9 @@ var requestConfig = {
     body: JSON.stringify(userData)
 }
 
-fetch('https://todo-api.ctd.academy/v1/users', requestConfig).then(
+function authUser() {
+
+    fetch('https://todo-api.ctd.academy/v1/users', requestConfig).then(
     response => {
         if(response.ok) {
 
@@ -43,3 +45,8 @@ fetch('https://todo-api.ctd.academy/v1/users', requestConfig).then(
         }
     }
 )
+    
+}
+
+
+

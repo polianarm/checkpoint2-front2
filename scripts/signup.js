@@ -119,9 +119,9 @@ if( passwordInputRef.value === passwordCheckInputRef.value){
 //     isValid = false;
 //   }
 // }
-submitInputRef.disabled = true;
-  function completeValidate() {
-    submitInputRef.addEventListener("click", (event) => {
+// submitInputRef.disabled = true;
+  function completeValidate(event) {
+    // submitInputRef.addEventListener("click", (event) => {
       event.preventDefault(); //evita o comportamento padrão de envio do formulario
       //submitInputRef.disabled = !(validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual())
       const allFieldsValid = validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual() 
@@ -129,12 +129,57 @@ submitInputRef.disabled = true;
       if (validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual()) {
         
         alert("entrou");
-        loginButtonRef.form.submit(); //Submit o formulario se a validação passar
+        // loginButtonRef.form.submit(); //Submit o formulario se a validação passar
         submitInputRef.removeAttribute("disabled"); 
       
       }
-    });
+
+      authUser()
   }
+
+  //requisião
+
+function authUser() {
+
+const userData = {
+    firstName: firstNameInputRef.value,
+    lastName: lastNameInputRef.value,
+    email: emailInputRef.value,
+    password: passwordInputRef.value
+}
+console.log(userData)
+
+const requestHeaders = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+}
+
+var requestConfig = {
+    method: 'POST',
+    headers: requestHeaders,
+    body: JSON.stringify(userData)
+}
+
+  console.log('agora tá entrando no fetch')
+
+    fetch('https://todo-api.ctd.academy/v1/users', requestConfig).then(
+    response => {
+        if(response.ok) {
+          console.log(response)
+
+            alert('Você foi cadastrado com sucesso')
+
+            window.location.href = '/checkpoint2-front2/index.html'
+
+        } else {
+
+            alert('O usuário ja foi cadastrado')
+
+        }
+    }
+)
+    
+}
   
   // adiciona um evento de input para cada campo de entrada
   firstNameInputRef.addEventListener('input', validateName);
@@ -142,9 +187,10 @@ submitInputRef.disabled = true;
   emailInputRef.addEventListener('input', validateEmail);
   passwordInputRef.addEventListener('input', validatePassword);
   passwordCheckInputRef.addEventListener('input', arePasswordsEqual);
+  submitInputRef.addEventListener("click", completeValidate)
  // submitInputRef.addEventListener('click', completeValidate)
 
 
-  completeValidate()
+  
 
 
