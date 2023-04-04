@@ -166,11 +166,13 @@ var requestConfig = {
     response => {
         if(response.ok) {
           console.log(response)
-
+          token => {
+            localStorage.setItem('token', token.jwt)
+            console.log(token)
+          }
             alert('Você foi cadastrado com sucesso')
 
-            window.location.href = '/checkpoint2-front2/index.html'
-
+            window.location.href = 'index.html'
         } else {
 
             alert('O usuário ja foi cadastrado')
@@ -188,7 +190,7 @@ var requestConfig = {
   passwordInputRef.addEventListener('input', validatePassword);
   passwordCheckInputRef.addEventListener('input', arePasswordsEqual);
   submitInputRef.addEventListener("click", completeValidate)
- // submitInputRef.addEventListener('click', completeValidate)
+
 
 
   

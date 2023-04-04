@@ -7,9 +7,9 @@ const mensage2 = document.querySelector(".mensage2");
 // VALIDAÇÃO DE EMAIL
 function validateEmail() {
   const email = inputEmailRef.value.trim();
-// inputEmailRef.value.length
+  // inputEmailRef.value.length
 
-const emailRegex = /^[a-zA-Z0-9._%+-]{6,}@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]{6,}@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
 
   if (!emailRegex.test(email)) {
     mensage1.innerHTML = "Preencha corretamente o campo Email";
@@ -38,7 +38,7 @@ const emailRegex = /^[a-zA-Z0-9._%+-]{6,}@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
 
 function validatePassword() {
   const password = inputPasswordRef.value;
-// inputPasswordRef.value.length
+  // inputPasswordRef.value.length
   if (password.length < 8) {
     mensage2.innerHTML = "Preencha Senha com minimo de 8 caracteres";
     inputPasswordRef.classList.add("error");
@@ -50,59 +50,53 @@ function validatePassword() {
   }
 }
 
-
 function authUser() {
-
   const data = {
     email: inputEmailRef.value,
-    password: inputPasswordRef.value
-  }
+    password: inputPasswordRef.value,
+  };
 
   const requestHeaders = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  };
 
-  
-let requestConfig = {
-  method: 'POST',
-  headers: requestHeaders,
-  body: JSON.stringify(data)
-}
+  let requestConfig = {
+    method: "POST",
+    headers: requestHeaders,
+    body: JSON.stringify(data),
+  };
 
-fetch('https://todo-api.ctd.academy/v1/users/login', requestConfig).then(
-  response => {
+  fetch("https://todo-api.ctd.academy/v1/users/login", requestConfig).then(
+    (response) => {
+      if (response.ok) {
+        response.json().then(
+          token => {
+            localStorage.setItem('jwt', JSON.stringify(token));
 
-    if (response.ok) {
-      response.json().then(
-        token => {
-          localStorage.setItem('token', token.jwt)
-          console.log(token)
-        }
-      )
-      alert('login realizado')
-      window.location.href = '/checkpoint2-front2/tasks.html'
-    } else {
-      alert('tente novamente')
+            console.log(token)
+          }
+        )
+        alert('login realizado')
+        window.location.href = 'tasks.html'
+      } else {
+        alert('tente novamente')
+      }
     }
-  }
-)
+  );
 }
 
 function completeValidate(event) {
+  event.preventDefault(); //evita o comportamento padrão de envio do formulario
 
-    event.preventDefault(); //evita o comportamento padrão de envio do formulario
+  if (validateEmail() && validatePassword()) {
+    alert("entrou");
+    //   loginButtonRef.form.submit(); //Submit o formulario se a validação passar
+  }
 
-    if (validateEmail() && validatePassword()) {
-      alert("entrou");
-      //   loginButtonRef.form.submit(); //Submit o formulario se a validação passar
-    }
-
-    authUser()
-
+  authUser();
 }
 
 inputEmailRef.addEventListener("input", validateEmail);
 inputPasswordRef.addEventListener("input", validatePassword);
-loginButtonRef.addEventListener('click', completeValidate);
-
+loginButtonRef.addEventListener("click", completeValidate);
