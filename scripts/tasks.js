@@ -1,32 +1,34 @@
+  const urlUsuario = 'https://todo-api.ctd.academy/v1/users/getMe';
+  const token = localStorage.getItem('token');
+  // ----------------------------------------------------------------------------------------------
+                                // CHECAR TOKEN
+  // ----------------------------------------------------------------------------------------------
+
+  const tokenCheck = localStorage.getItem('token')
+
+  function checkToken() {
+      if(tokenCheck === null) {
+      location.replace('./index.html');
+   }
+  }
+  
+  checkToken()
+// ----------------------------------------------------------------------------------------------
+// BOTAO SAIR 
+// ----------------------------------------------------------------------------------------------
+
 const closeButtonRef = document.querySelector('#closeApp')
-
-// const token = localStorage.getItem('token')
-
-// function checkToken() {
-//     if(token === null) {
-//     location.replace('./index.html');
-//  }
-// }
-
-// checkToken()
-
-function logout() {
+  function logout() {
 
     location.replace('./index.html');
   localStorage.clear()
 
 }
-
-
-window.addEventListener('load', function () {
-
-
-  const urlUsuario = 'https://todo-api.ctd.academy/v1/users/getMe';
-  const token = localStorage.getItem('token');
-
   obtenerNombreUsuario()
   // ...
-
+// ----------------------------------------------------------------------------------------------
+                                // Nome de usuario
+  // ----------------------------------------------------------------------------------------------
   function obtenerNombreUsuario() {
     const settings = {
       method: 'GET',
@@ -34,11 +36,11 @@ window.addEventListener('load', function () {
         authorization: token
       }
     };
-    console.log("Consultando mi usuario...");
+    console.log("Consultando meu usuario...");
     fetch(urlUsuario, settings)
       .then(response => response.json())
       .then(data => {
-        console.log("Nombre de usuario:");
+        console.log("Nome de usuario:");
         console.log(data.firstName);
         const nombreUsuario = document.querySelector('.user-info p');
         nombreUsuario.innerText = data.firstName;
@@ -48,7 +50,29 @@ window.addEventListener('load', function () {
 
 
 
+// ----------------------------------------------------------------------------------------------
+                                // Criar Novas tarefas POST
+  // ----------------------------------------------------------------------------------------------
+  const urlTarefas = 'https://todo-api.ctd.academy/v1/tasks';
+  function consultarTarefas (){
 
-})
+    const settings = {
+      method: "GET",
+      headers: {
+        authorization: token,
+      },
+    };
+    console.log("Consultar as tarefas");
+
+    fetch(urlTarefas, settings)
+    .then((response) => response.json())
+    .then((tareas) => {
+        
+
+    })
+  }
+
+  
+
 
 closeButtonRef.addEventListener('click', () => logout())
