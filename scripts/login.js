@@ -76,7 +76,7 @@ function authUser() {
             console.log(token)
           }
         )
-        alert('login realizado')
+        // alert('login realizado')
         window.location.href = 'tasks.html'
       } else {
         alert('tente novamente')

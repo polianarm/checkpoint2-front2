@@ -1,4 +1,6 @@
-// inputs por ID 
+ 
+
+// inputs por ID
 const firstNameInputRef  = document.querySelector('#firstName');
 const lastNameInputRef  = document.querySelector('#lastName');
 const emailInputRef  = document.querySelector('#email');
@@ -96,45 +98,26 @@ if( passwordInputRef.value === passwordCheckInputRef.value){
 }
 }
   
-// function showAllErrors() {
-//   let isValid = true;
 
-//   if (!validateName()) {
-//     isValid = false;
-//   }
-
-//   if (!validateLastName()) {
-//     isValid = false;
-//   }
-
-//   if (!validateEmail()) {
-//     isValid = false;
-//   }
-
-//   if (!validatePassword()) {
-//     isValid = false;
-//   }
-
-//   if (!arePasswordsEqual()) {
-//     isValid = false;
-//   }
-// }
-// submitInputRef.disabled = true;
   function completeValidate(event) {
     // submitInputRef.addEventListener("click", (event) => {
       event.preventDefault(); //evita o comportamento padrão de envio do formulario
       //submitInputRef.disabled = !(validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual())
       const allFieldsValid = validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual() 
-        submitInputRef.disabled=!allFieldsValid
+        // submitInputRef.disabled=!allFieldsValid
       if (validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual()) {
-        
+        // Swal.fire(
+        //   'The Internet?',
+        //   'That thing is still around?',
+        //   'question'
+        // )
         alert("entrou");
         // loginButtonRef.form.submit(); //Submit o formulario se a validação passar
         submitInputRef.removeAttribute("disabled"); 
-      
+        authUser()
       }
-
-      authUser()
+    
+    
   }
 
   //requisião
