@@ -72,8 +72,7 @@ function authUser() {
       if (response.ok) {
         response.json().then(
           token => {
-            localStorage.setItem('jwt', JSON.stringify(token));
-
+            localStorage.setItem('token', token.jwt)
             console.log(token)
           }
         )

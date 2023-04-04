@@ -15,7 +15,8 @@ window.addEventListener('load', function() {
   
    
   const urlUsuario = 'https://todo-api.ctd.academy/v1/users/getMe';
-  const token = JSON.parse(localStorage.getItem('token'));
+  const token = localStorage.getItem('token');
+
     obtenerNombreUsuario()
     // ...
     
@@ -37,4 +38,8 @@ window.addEventListener('load', function() {
           })
           .catch(error => console.log(error));
       }
+    
+    
+
+
 })
