@@ -1,21 +1,20 @@
-  const urlUsuario = 'https://todo-api.ctd.academy/v1/users/getMe';
-  const token = localStorage.getItem('token');
-  const novaTarefa = document.querySelector('#novaTarefa');
-  // ----------------------------------------------------------------------------------------------
-                                // CHECAR TOKEN
-  // ----------------------------------------------------------------------------------------------
+const urlUsuario = "https://todo-api.ctd.academy/v1/users/getMe";
+const token = localStorage.getItem("token");
+const novaTarefa = document.querySelector("#novaTarefa");
+
+const btnSubmitRef = document.querySelector("#btnSubmit");
+// ----------------------------------------------------------------------------------------------
+// CHECAR TOKEN
+// ----------------------------------------------------------------------------------------------
 
 const tokenCheck = localStorage.getItem("token");
-
-  function checkToken() {
-      if(tokenCheck === null) {
-      location.replace('./index.html');
-   }
-    
-
+function checkToken() {
+  if (tokenCheck === null) {
+    location.replace("./index.html");
   }
-  
-  checkToken()
+}
+
+checkToken();
 // ----------------------------------------------------------------------------------------------
 // BOTAO SAIR
 // ----------------------------------------------------------------------------------------------
@@ -26,13 +25,13 @@ function logout() {
   // localStorage.clear();
 
   Swal.fire({
-    title: 'Deseja sair?',
-    icon: 'question',
+    title: "Deseja sair?",
+    icon: "question",
     showCancelButton: true,
-    confirmButtonColor: '#7898FF;',
-    cancelButtonColor: '#8E64C5',
-    confirmButtonText: 'Confirmar',
-    cancelButtonText: 'Cancelar'
+    confirmButtonColor: "#7898FF;",
+    cancelButtonColor: "#8E64C5",
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar",
   }).then((result) => {
     if (result.isConfirmed) {
       // Swal.fire(
@@ -40,12 +39,9 @@ function logout() {
       //    'success'
       // );
       localStorage.clear();
-      location.replace('./index.html');
+      location.replace("./index.html");
     }
   });
-
-
-
 }
 
 // ...
@@ -71,112 +67,87 @@ function obterNomeUsuario() {
       const nomeUsuario = document.querySelector(".user-info p");
       nomeUsuario.innerText = data.firstName;
     })
-    .catch(() => { 
-     localStorage.clear();
-    location.replace('./index.html');
-  })
+    .catch(() => {
+      localStorage.clear();
+      location.replace("./index.html");
+    });
 }
 
 // ----------------------------------------------------------------------------------------------
-                                // Criar Novas tarefa POST
-  // ----------------------------------------------------------------------------------------------
-  const tarefas = 'https://todo-api.ctd.academy/v1/tasks';
-  function consultarTarefas (){
-
-    const settings = {
-      method: 'GET',
-      headers: requestHeaders
-    };
-    console.log("Consultar as tarefas");
-
-    fetch(tarefas, settings)
-    .then((response) => response.json())
-    .then((tarefas) => {
-          console.log("Consultar as tarefaas")
-          console.table(tarefas);
-        
-  })
-  .catch(error => console.log(error));
-    
-  }
-  // ----------------------------------------------------------------------------------------------
-                                // Criar Novas tarefas POST
-  // ----------------------------------------------------------------------------------------------
+// Criar Novas tarefas POST
+// ----------------------------------------------------------------------------------------------
 
 function criarTarefa(event) {
+  event.preventDefault();
 
-  event.preventDefault()
-// -------------quando criada --------------
-  // {
-  //   "id": 1,
-  //   "description": "Aprender Javascript",
-  //   "completed": false,
-  //   "userId": 1,
-  //   "createdAt": "2021-06-30T22:53:09.549Z"
-  // }
-  // ----------------- OQUE VAI SER AGREGADO------------
-  // {
-  //   "description": "Aprender Javascript",
-  //   "completed": false
-  // }
   const tarefas = {
-    id: '',
-    description: novaTarefa.value, 
+    description: novaTarefa.value,
     completed: false,
-    userId: '',
-    createdAt: ''
-  }
+  };
 
   const requestHeaders = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-}
-  
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: token,
+  };
 
   const requestConfig = {
-    method: 'POST',
-    body:JSON.stringify(),
+    method: "POST",
+    body: JSON.stringify(tarefas),
     headers: requestHeaders,
-}
-  
-fetch(tarefas, requestConfig).then(
-  response => {
-    if(response.ok) {
-      tarefas={
-      tarefas.description
+  };
 
+  fetch(buscarTarefas, requestConfig).then((response) => {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return response.json();
     }
-    }
+ 
+    
+  });
+  // .then((data) => {
+  //     userTask =(token)
+  // })
+}
+
+// ----------------------------------------------------------------------------------------------
+// ---------------Criar Novas tarefas GET
+// ----------------------------------------------------------------------------------------------
+
+const buscarTarefas = 'https://todo-api.ctd.academy/v1/tasks';
+// Função que obtém as Tasks criadas pelo usuário logado
+function getTasks() {
+
+  // Configurações da Request
+  var requestConfig = {
+      method: 'GET',
+      headers: requestHeaders
   }
-)
+
+  // Requisição para criar a Task
+  fetch(buscarTarefas, requestConfig).then(
+      response => {
+          if(response.ok) {
+              response.json().then(
+                  data => {
+                      console.log(data)
+                      let tasks = [];
+                      tasks.push(data)
+                      for(const task of tasks){
+                        console.log(task)
+                      }
+                  }
+              )
+          }
+      }
+  )
 
 }
 
-btnSubmit.addEventListener('click', criarTarefa)
+btnSubmitRef.addEventListener("click", criarTarefa);
 
+closeButtonRef.addEventListener("click", () => logout());
 
-
-closeButtonRef.addEventListener('click', () => logout())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ------------------------------ COLA 
+// ------------------------------ COLA
 
 // // Função que irá criar uma Task
 // function createTask() {
@@ -209,7 +180,6 @@ closeButtonRef.addEventListener('click', () => logout())
 
 // }
 
-
 // // Função que obtém as Tasks criadas pelo usuário logado
 // function getTasks() {
 
@@ -233,8 +203,6 @@ closeButtonRef.addEventListener('click', () => logout())
 //   )
 
 // }
-
-
 
 // // Função que irá obter os dados do usuário Logado
 // function getUserData() {

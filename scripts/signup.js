@@ -100,19 +100,15 @@ if( passwordInputRef.value === passwordCheckInputRef.value){
   
 
   function completeValidate(event) {
-    // submitInputRef.addEventListener("click", (event) => {
+
       event.preventDefault(); //evita o comportamento padrão de envio do formulario
-      //submitInputRef.disabled = !(validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual())
-      const allFieldsValid = validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual() 
-        // submitInputRef.disabled=!allFieldsValid
+      
+      // const allFieldsValid = validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual() 
+     
       if (validateName() && validateLastName() && validateEmail()  && validatePassword() &&  arePasswordsEqual()) {
-        // Swal.fire(
-        //   'The Internet?',
-        //   'That thing is still around?',
-        //   'question'
-        // )
-        alert("entrou");
-        // loginButtonRef.form.submit(); //Submit o formulario se a validação passar
+     
+        // alert("entrou");
+
         submitInputRef.removeAttribute("disabled"); 
         authUser()
       }
@@ -120,7 +116,7 @@ if( passwordInputRef.value === passwordCheckInputRef.value){
     
   }
 
-  //requisião
+
 
 function authUser() {
 

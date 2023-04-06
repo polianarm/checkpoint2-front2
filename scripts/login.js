@@ -1,3 +1,5 @@
+
+
 const inputEmailRef = document.querySelector("#inputEmail");
 const inputPasswordRef = document.querySelector("#inputPassword");
 const loginButtonRef = document.querySelector("#loginButton");
@@ -75,8 +77,18 @@ function authUser() {
             localStorage.setItem('token', token.jwt)
             console.log(token)
           }
+          
         )
         // alert('login realizado')
+       
+          // swal.fire(
+          //   'Seja bem vindo ',
+          //   'Comece a planejar sua rotina',
+          //   'success'
+          // )
+     
+    
+    
         window.location.href = 'tasks.html'
       } else {
         alert('tente novamente')
@@ -89,9 +101,10 @@ function completeValidate(event) {
   event.preventDefault(); //evita o comportamento padrão de envio do formulario
 
   if (validateEmail() && validatePassword()) {
-    alert("entrou");
+
     //   loginButtonRef.form.submit(); //Submit o formulario se a validação passar
   }
+ 
 
   authUser();
 }
