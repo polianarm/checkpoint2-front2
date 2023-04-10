@@ -15,6 +15,20 @@ function checkToken() {
   }
 }
 
+// ------------------- FUNÇÃO VALIDAR INPUT--------------------------------
+const novaTarefaRef = document.querySelector("#novaTarefa")
+validateInputTask()
+function validateInputTask(){
+  const novaTarefa = novaTarefaRef.value.trim();
+
+  if (novaTarefa.length <4){
+    novaTarefaRef.classList.add("error");
+    return false;
+  }else {
+      novaTarefaRef.classList.remove("error");
+    return true;
+  }
+}
 checkToken();
 // ----------------------------------------------------------------------------------------------
 //         1-BOTAO SAIR
@@ -80,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           response.json().then((tarefa) => {
             getTasksOnApi(tarefa);
-
           });
         }
       }
@@ -111,8 +124,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     fetch(buscarTarefas, requestConfig)
       .then((response) => response.json())
-      .then((tarea) => {
+      .then((tarefa) => {
         getTasks();
+    
 
         novaTarefa.value = "";
       });
