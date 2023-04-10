@@ -3,6 +3,7 @@ const token = localStorage.getItem("token");
 const novaTarefa = document.querySelector("#novaTarefa");
 
 const btnSubmitRef = document.querySelector("#btnSubmit");
+
 // ----------------------------------------------------------------------------------------------
 // CHECAR TOKEN
 // ----------------------------------------------------------------------------------------------
@@ -16,221 +17,229 @@ function checkToken() {
 
 checkToken();
 // ----------------------------------------------------------------------------------------------
-// BOTAO SAIR
+//         1-BOTAO SAIR
 // ----------------------------------------------------------------------------------------------
-
-const closeButtonRef = document.querySelector("#closeApp");
-function logout() {
-  // location.replace("./index.html");
-  // localStorage.clear();
-
-  Swal.fire({
-    title: "Deseja sair?",
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonColor: "#7898FF;",
-    cancelButtonColor: "#8E64C5",
-    confirmButtonText: "Confirmar",
-    cancelButtonText: "Cancelar",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Swal.fire(
-      //   'Até mais',
-      //    'success'
-      // );
-      localStorage.clear();
-      location.replace("./index.html");
-    }
-  });
-}
-
-// ...
-// ----------------------------------------------------------------------------------------------
-// Nome de usuario
-// ----------------------------------------------------------------------------------------------
-obterNomeUsuario();
-function obterNomeUsuario() {
-  const settings = {
-    method: "GET",
-    headers: {
-      authorization: token,
-    },
-  };
-  console.log("Consultando meu usuario...");
-  fetch(urlUsuario, settings)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Nome de usuario:");
-      console.log(data.firstName);
-      console.log(data.id);
-
-      const nomeUsuario = document.querySelector(".user-info p");
-      nomeUsuario.innerText = data.firstName;
-    })
-    .catch(() => {
-      localStorage.clear();
-      location.replace("./index.html");
+document.addEventListener("DOMContentLoaded", () => {
+  const closeButtonRef = document.querySelector("#closeApp");
+  function logout() {
+    Swal.fire({
+      title: "Deseja sair?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#7898FF;",
+      cancelButtonColor: "#8E64C5",
+      confirmButtonText: "Confirmar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.clear();
+        location.replace("./index.html");
+      }
     });
-}
-
-// ----------------------------------------------------------------------------------------------
-// Criar Novas tarefas POST
-// ----------------------------------------------------------------------------------------------
-
-function criarTarefa(event) {
-  event.preventDefault();
-
-  const tarefas = {
-    description: novaTarefa.value,
-    completed: false,
-  };
-
-  const requestHeaders = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    Authorization: token,
-  };
-
-  const requestConfig = {
-    method: "POST",
-    body: JSON.stringify(tarefas),
-    headers: requestHeaders,
-  };
-
-  fetch(buscarTarefas, requestConfig).then((response) => {
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return response.json();
-    }
- 
-    
-  });
-  // .then((data) => {
-  //     userTask =(token)
-  // })
-}
-
-// ----------------------------------------------------------------------------------------------
-// ---------------Criar Novas tarefas GET
-// ----------------------------------------------------------------------------------------------
-
-const buscarTarefas = 'https://todo-api.ctd.academy/v1/tasks';
-// Função que obtém as Tasks criadas pelo usuário logado
-function getTasks() {
-
-  // Configurações da Request
-  var requestConfig = {
-      method: 'GET',
-      headers: requestHeaders
   }
 
-  // Requisição para criar a Task
-  fetch(buscarTarefas, requestConfig).then(
-      response => {
-          if(response.ok) {
-              response.json().then(
-                  data => {
-                      console.log(data)
-                      let tasks = [];
-                      tasks.push(data)
-                      for(const task of tasks){
-                        console.log(task)
-                      }
-                  }
-              )
-          }
+  // ----------------------------------------------------------------------------------------------
+  //              2-Nome de usuario get
+  // ----------------------------------------------------------------------------------------------
+  obterNomeUsuario();
+  function obterNomeUsuario() {
+    const settings = {
+      method: "GET",
+      headers: {
+        authorization: token,
+      },
+    };
+    fetch(urlUsuario, settings)
+      .then((response) => response.json())
+      .then((data) => {
+        const nomeUsuario = document.querySelector(".user-info p");
+        nomeUsuario.innerText = data.firstName + " " + data.lastName;
+      })
+      .catch(() => {
+        localStorage.clear();
+        location.replace("./index.html");
+      });
+  }
+  /* -------------------------------------------------------------------------- */
+  /*                 3-Buscar  tarefas  get          */
+  /* -------------------------------------------------------------------------- */
+  getTasks();
+
+  const buscarTarefas = "https://todo-api.ctd.academy/v1/tasks";
+
+  function getTasks() {
+    var requestConfig = {
+      method: "GET",
+      headers: {
+        authorization: token,
+      },
+    };
+
+    fetch("https://todo-api.ctd.academy/v1/tasks", requestConfig).then(
+      (response) => {
+        if (response.ok) {
+          response.json().then((tarefa) => {
+            getTasksOnApi(tarefa);
+
+          });
+        }
       }
-  )
+    );
+  }
+  // ----------------------------------------------------------------------------------------------
+  //                    4 Criar Novas tarefas POST
+  // ----------------------------------------------------------------------------------------------
+  function criarTarefa(event) {
+    event.preventDefault();
 
-}
+    const tarefas = {
+      description: novaTarefa.value,
+      completed: false,
+    };
 
-btnSubmitRef.addEventListener("click", criarTarefa);
+    const requestHeaders = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    };
 
-closeButtonRef.addEventListener("click", () => logout());
+    const requestConfig = {
+      method: "POST",
+      body: JSON.stringify(tarefas),
+      headers: requestHeaders,
+    };
 
-// ------------------------------ COLA
+    fetch(buscarTarefas, requestConfig)
+      .then((response) => response.json())
+      .then((tarea) => {
+        getTasks();
 
-// // Função que irá criar uma Task
-// function createTask() {
+        novaTarefa.value = "";
+      });
+  }
+  // ----------------------------------------------------------------------------------------------
+  // --------------- OBTEN AS TAREFAS DA API  [GET]
+  // ----------------------------------------------------------------------------------------------
+  function getTasksOnApi(tarefas) {
+    const tarefasPendentes = document.querySelector(".tarefas-pendentes");
+    const tarefasTerminadas = document.querySelector(".tarefas-terminadas");
+    tarefasPendentes.innerHTML = "";
+    tarefasTerminadas.innerHTML = "";
 
-//   // Informações sobre a Task
-//   const taskData = {
-//       description: 'Teste tarefa 2',
-//       completed: true
-//   }
+    if (tarefas && Array.isArray(tarefas)) {
+      tarefas.forEach((tarefa) => {
+        
+        const createdAtDate = new Date(tarefa.createdAt);
+        const createAtFormted = new Intl.DateTimeFormat("pt-BR").format(createdAtDate);
 
-//   // Configuração da Request
-//   var requestConfig = {
-//       method: 'POST',
-//       headers: requestHeaders,
-//       body: JSON.stringify(taskData)
-//   }
+        if (tarefa.completed) {
+          tarefasTerminadas.innerHTML += `
+         <li class="tarefa">
+         <div class="not-done finish" id="${tarefa.id}"></div>
+         <div class="descricao">
+           <p class="nome">${tarefa.description}</p>
+           <p class="timestamp">Criada em:  ${createAtFormted}</p>
+         </div>
+       </li> 
+                       `;
+        } else {
+          tarefasPendentes.innerHTML += `
 
-//   // Realização da Request para criar uma nova Task
-//   fetch(`${baseUrlAPI}/tasks`, requestConfig).then(
-//       response => {
-//           if(response.ok) {
-//               response.json().then(
-//                   data => {
-//                       console.log(data)
-//                   }
-//               )
-//           }
-//       }
-//   )
+             <li class="tarefa">
+             <div class="not-done unfinished" id="${tarefa.id}"></div>
+        <div class="descricao">
+          <p class="nome">${tarefa.description}</p>
+          <p class="timestamp">Criada em:  ${createAtFormted}</p>
+        </div>
+      </li>           
+         
+         `;
+        }
+      });
+    }
+  }
 
-// }
+  // ----------------------------------------------------------------------------------------------
+  // --------------- EVENT LISTENER PPARA TROCAR ESTADO DA TAREFA
+  // --------------------------------------------------------------------------------------------
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("unfinished")) {
+      const taskId = event.target.attributes.id.value;
+      atualizarTarefa(taskId);
+    }
+  });
+  // ----------------------------------------------------------------------------------------------
+  // --------------- FUNÇÃO PARA TROCAR ESTADO DA TAREFA
+  // --------------------------------------------------------------------------------------------
+  function atualizarTarefa(id) {
+    let tarefaObj = {
+      completed: true,
+    };
 
-// // Função que obtém as Tasks criadas pelo usuário logado
-// function getTasks() {
+    let tarefaObjJson = JSON.stringify(tarefaObj);
 
-//   // Configurações da Request
-//   var requestConfig = {
-//       method: 'GET',
-//       headers: requestHeaders
-//   }
+    const requestHeaders = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    };
+    const requestConfig = {
+      method: "PUT",
+      headers: requestHeaders,
+      body: tarefaObjJson,
+    };
 
-//   // Requisição para criar a Task
-//   fetch(`${baseUrlAPI}/tasks`, requestConfig).then(
-//       response => {
-//           if(response.ok) {
-//               response.json().then(
-//                   tasks => {
-//                       console.log(tasks)
-//                   }
-//               )
-//           }
-//       }
-//   )
+    fetch(`https://todo-api.ctd.academy/v1/tasks/${id}`, requestConfig).then(
+      (response) => {
+        if (response.ok) {
+          // console.log(`Tarefa ${id} atualizada com sucesso!`);
+          console.log(response)
+          getTasks();
+        } else {
+          // console.error("Houve um erro ao atualizar a tarefa (requisição PUT)");
+        }
+      }
+    );
+  }
 
-// }
+  // ===========================================================
+  // 6 - EVENT LISTENER PARA DELETAR TASKS POR ID
+  // ===========================================================
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("finish")) {
+      const taskId = event.target.attributes.id.value;
+      deletarTarefa(taskId);
+    }
+  });
+  // ===========================================================
+  // Função que deleta uma Task pelo ID
+  // ===========================================================
+  function deletarTarefa(taskId) {
+    const requestHeaders = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    };
 
-// // Função que irá obter os dados do usuário Logado
-// function getUserData() {
+    const requestConfig = {
+      method: "DELETE",
+      headers: requestHeaders,
+    };
 
-//   // Configuração da Request
-//   var requestConfig = {
-//       method: 'GET',
-//       headers: requestHeaders
-//   }
+    fetch(`${buscarTarefas}/${taskId}`, requestConfig)
+      .then((response) => {
+        if (response.ok) {
+          // console.log(`Tarefa ${taskId} deletada com sucesso!`);
 
-//   // Request para obter os Dados do Usuário
-//   fetch(`${baseUrlAPI}/users/getMe`, requestConfig).then(
-//       response => {
-//           if(response.ok) {
+          getTasks();
+        }
+      })
+      .catch((error) => {
+        // console.error("Houve um erro ao deletar a tarefa: ", error);
+      });
+  }
 
-//               // Obtém as Tasks do usuário logado
-//               getTasks()
+  btnSubmitRef.addEventListener("click", criarTarefa);
 
-//           } else {
-//               // Verifica se a API retornou o Status code 401(O número 401 significa que o Token fornecido está inválido)
-//               if(response.status === 401) {
-
-//                   // Caso o Token esteja errado será realizar o Logout do usuário na Aplicação
-//                   logout()
-
-//               }
-//           }
-//       }
-//   )
-
-// }
+  closeButtonRef.addEventListener("click", () => logout());
+});
