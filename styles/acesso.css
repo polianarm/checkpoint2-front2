@@ -95,7 +95,7 @@ body{
   flex-wrap: wrap;
 }
 .error{
-
+  background: #ffcccc;
   border: 1px solid red
 }
 .mensage,.mensage2{
