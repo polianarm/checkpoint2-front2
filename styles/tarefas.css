@@ -32,8 +32,11 @@ a {
   height: 2em;
   width: 2em;
   border-radius: 50%;
-  background-color: white;
-  opacity: .4;
+  background-image: url('../assets/perfil.jpg');
+  /* background-color: white; */
+  background-position:center;
+  background-size: cover;
+  opacity: 1;
   margin-left: .7em;
 }
 
@@ -239,6 +242,13 @@ a {
 #skeleton{
   animation: trasparencia 1s infinite;
 }
+
+.error{
+  background: #ffcccc;
+  border: 1px solid red
+}
+
+
 @keyframes trasparencia {
   0%{ opacity: 0.5;}
   100%{ opacity: 0.8;}

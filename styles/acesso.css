@@ -103,6 +103,19 @@ body{
 }
 
 
+@media (max-width: 768px) {
+  .left {
+   display: none;
+  }
+  body{
+    max-width: 100%;
+    padding: 0;
+    justify-content: center;
+  }
+  .right {
+    align-self: center;
+  }
+}
 
 /* ----------------------------Poli ------------------------------------------- */
 
